@@ -52,13 +52,18 @@ def main():
         try:
             item_due = cells[3].text
             item_parts = cells[2].find_all('div')
+            #for i, item in enumerate(cells):
+            #    print(f'part {i}: {item.text}')
             item_title = item_parts[0].text
             item_author = item_parts[1].text
+            item_position = cells[3].text
+            item_status = cells[5].text
+            print(f'Hold on {item_title} by {item_author} is {item_status}. Position: {item_position}.')
             # item_date_due = parse(item_due, timezone = tz)
             # how_long = item_date_due - Delorean(timezone = tz)
             #item_name = cells[2].text
             #print(f'{item_title} by {item_author} is due in {how_long.days} days on {item_due}')
-            print(cells)
+            #print(cells)
         except IndexError:
             pass
 
