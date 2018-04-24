@@ -3,6 +3,7 @@ from bs4 import BeautifulSoup
 from delorean import Delorean
 from delorean import parse
 from secrets import library_card, library_pin
+from time import sleep
 
 def main():
     tz = 'US/Eastern'
@@ -19,6 +20,7 @@ def main():
 
     #driver.get('https://account.torontopubliclibrary.ca/')
     driver.get('https://account.torontopubliclibrary.ca/checkouts')
+    sleep(3)
     item_table = driver.find_element_by_class_name('item-list')
     html_table = item_table.get_attribute('outerHTML')
     soup = BeautifulSoup(html_table, 'html.parser')
@@ -35,6 +37,28 @@ def main():
             how_long = item_date_due - Delorean(timezone = tz)
             item_name = cells[2].text
             print(f'{item_title} by {item_author} is due in {how_long.days} days on {item_due}')
+        except IndexError:
+            pass
+
+    driver.get('https://account.torontopubliclibrary.ca/holds')
+    sleep(3)
+    item_table = driver.find_element_by_class_name('item-list')
+    html_table = item_table.get_attribute('outerHTML')
+    soup = BeautifulSoup(html_table, 'html.parser')
+    rows = soup.findAll("tr")
+
+    for row in rows:
+        cells = row.find_all('td')
+        try:
+            item_due = cells[3].text
+            item_parts = cells[2].find_all('div')
+            item_title = item_parts[0].text
+            item_author = item_parts[1].text
+            # item_date_due = parse(item_due, timezone = tz)
+            # how_long = item_date_due - Delorean(timezone = tz)
+            #item_name = cells[2].text
+            #print(f'{item_title} by {item_author} is due in {how_long.days} days on {item_due}')
+            print(cells)
         except IndexError:
             pass
 
