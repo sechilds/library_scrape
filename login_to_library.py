@@ -42,9 +42,34 @@ def main():
         except IndexError:
             pass
 
+    # the problem with holds - there are 3 tables:
+    # holds-redux still-on-hold
+    # holds-redux in-transit
+    # what's the 3rd one??? Until I see it -- I can't really look for it.
     driver.get('https://account.torontopubliclibrary.ca/holds')
     sleep(3)
-    item_table = driver.find_element_by_class_name('item-list')
+    # books in transit
+    in_transit = driver.find_element_by_class_name('in_transit')
+    item_table = in_transit.find_element_by_class_name('item-list')
+    html_table = item_table.get_attribute('outerHTML')
+    soup = BeautifulSoup(html_table, 'html.parser')
+    rows = soup.findAll("tr")
+
+    for row in rows:
+        cells = row.find_all('td')
+        try:
+            item_due = cells[3].text
+            item_parts = cells[2].find_all('div')
+            #for i, item in enumerate(cells):
+            #    print(f'part {i}: {item.text}')
+            item_title = item_parts[0].text
+            item_author = item_parts[1].text
+            print(f'Hold on {item_title} by {item_author} is in transit.')
+        except IndexError:
+            pass
+    # look at those still on hold
+    still_on_hold = driver.find_element_by_class_name('still-on-hold')
+    item_table = still_on_hold.find_element_by_class_name('item-list')
     html_table = item_table.get_attribute('outerHTML')
     soup = BeautifulSoup(html_table, 'html.parser')
     rows = soup.findAll("tr")
