@@ -8,10 +8,19 @@ from delorean import parse
 from secrets import library_card, library_pin
 from time import sleep
 
+def remove_non_ascii(s):
+    return ''.join([i if ord(i) < 128 else ' ' for i in s])
+
+def safe_print(s):
+    try:
+        print(s)
+    except UnicodeEncodeError:
+        print(remove_non_ascii(s))
+
 def main():
     tz = 'US/Eastern'
 
-    driver = webdriver.Firefox()
+    driver = webdriver.Firefox(log_path = '/Users/sechilds/geckodriver.log')
 
     driver.get('https://torontopubliclibrary.ca/signin')
     card_no = driver.find_element_by_id('userId')
@@ -43,7 +52,7 @@ def main():
                 item_date_due = parse(item_due, timezone = tz)
                 how_long = item_date_due - Delorean(timezone = tz)
                 item_name = cells[2].text
-                print(f'{item_title} by {item_author} is due in {how_long.days} days on {item_due}')
+                safe_print(f'{item_title} by {item_author} is due in {how_long.days} days on {item_due}')
             except IndexError:
                 pass
 
@@ -73,7 +82,7 @@ def main():
                 #    print(f'part {i}: {item.text}')
                 item_title = item_parts[0].text
                 item_author = item_parts[1].text
-                print(f'Hold on {item_title} by {item_author} is in ready for pickup.')
+                safe_print(f'Hold on {item_title} by {item_author} is in ready for pickup.')
             except IndexError:
                 pass
     # books in transit
@@ -96,7 +105,7 @@ def main():
                 #    print(f'part {i}: {item.text}')
                 item_title = item_parts[0].text
                 item_author = item_parts[1].text
-                print(f'Hold on {item_title} by {item_author} is in transit.')
+                safe_print(f'Hold on {item_title} by {item_author} is in transit.')
             except IndexError:
                 pass
     # look at those still on hold
@@ -121,7 +130,7 @@ def main():
                 item_author = item_parts[1].text
                 item_position = cells[3].text
                 item_status = cells[5].text
-                print(f'Hold on {item_title} by {item_author} is {item_status}. Position: {item_position}.')
+                safe_print(f'Hold on {item_title} by {item_author} is {item_status}. Position: {item_position}.')
                 # item_date_due = parse(item_due, timezone = tz)
                 # how_long = item_date_due - Delorean(timezone = tz)
                 #item_name = cells[2].text
