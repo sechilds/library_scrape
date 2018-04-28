@@ -1,3 +1,4 @@
+#! /Users/sechilds/anaconda3/envs/presto_scrape/bin/python
 # coding=utf-8
 from selenium import webdriver
 from bs4 import BeautifulSoup
