@@ -49,7 +49,7 @@ def main():
     driver.get('https://account.torontopubliclibrary.ca/holds')
     sleep(3)
     # books in transit
-    in_transit = driver.find_element_by_class_name('in_transit')
+    in_transit = driver.find_element_by_class_name('in-transit')
     item_table = in_transit.find_element_by_class_name('item-list')
     html_table = item_table.get_attribute('outerHTML')
     soup = BeautifulSoup(html_table, 'html.parser')
