@@ -78,15 +78,19 @@ def main():
         for row in rows:
             cells = row.find_all('td')
             try:
-                item_due = cells[5].find_all('div')
+                #item_due = cells[5].find_all('div')
+                item_due = cells[5]
+                item_date_due = parse(item_due, timezone = tz)
                 item_parts = cells[2].find_all('div')
-                for i, item in enumerate(cells):
-                    print(f'part {i}: {item.text}')
-                for i, item in enumerate(item_due):
-                    print(f'part {i}: {item.text}')
+                #for i, item in enumerate(cells):
+                #    print(f'part {i}: {item.text}')
+                #for i, item in enumerate(item_due):
+                #    print(f'part {i}: {item.text}')
                 item_title = item_parts[0].text
                 item_author = item_parts[1].text
-                safe_print(f'Hold on {item_title} by {item_author} is in ready for pickup.')
+                how_long = item_date_due - Delorean(timezone = tz) + timedelta(days=1)
+                day_text = ('1 day' if how_long.days == 1 else f'{how_long.days} days')
+                safe_print(f'Hold on {item_title} by {item_author} is in ready for pickup. Pick up by {item_date_due} ({day_text})')
             except IndexError:
                 pass
     # books in transit
