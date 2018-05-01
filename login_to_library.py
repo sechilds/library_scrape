@@ -7,6 +7,7 @@ from delorean import Delorean
 from delorean import parse
 from secrets import library_card, library_pin
 from time import sleep
+from datetime import timedelta
 
 def remove_non_ascii(s):
     return ''.join([i if ord(i) < 128 else ' ' for i in s])
@@ -50,7 +51,7 @@ def main():
                 item_title = item_parts[0].text
                 item_author = item_parts[1].text
                 item_date_due = parse(item_due, timezone = tz)
-                how_long = item_date_due - Delorean(timezone = tz)
+                how_long = item_date_due - Delorean(timezone = tz) + timedelta(days=1)
                 item_name = cells[2].text
                 safe_print(f'{how_long.days}D: {item_title} by {item_author} is due in {how_long.days} days on {item_due}')
             except IndexError:
