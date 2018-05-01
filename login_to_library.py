@@ -70,7 +70,7 @@ def main():
     except NoSuchElementException:
         ready_for_pickup = False
     if ready_for_pickup:
-        item_table = in_transit.find_element_by_class_name('item-list')
+        item_table = ready_for_pickup.find_element_by_class_name('item-list')
         html_table = item_table.get_attribute('outerHTML')
         soup = BeautifulSoup(html_table, 'html.parser')
         rows = soup.findAll("tr")
@@ -78,10 +78,12 @@ def main():
         for row in rows:
             cells = row.find_all('td')
             try:
-                item_due = cells[3].text
+                item_due = cells[5].find_all('div')
                 item_parts = cells[2].find_all('div')
-                #for i, item in enumerate(cells):
-                #    print(f'part {i}: {item.text}')
+                for i, item in enumerate(cells):
+                    print(f'part {i}: {item.text}')
+                for i, item in enumerate(item_due):
+                    print(f'part {i}: {item.text}')
                 item_title = item_parts[0].text
                 item_author = item_parts[1].text
                 safe_print(f'Hold on {item_title} by {item_author} is in ready for pickup.')
