@@ -52,7 +52,7 @@ def main():
                 item_author = item_parts[1].text
                 item_date_due = parse(item_due, timezone = tz)
                 how_long = item_date_due - Delorean(timezone = tz) + timedelta(days=1)
-                day_text = '1 day' if how_log == 1 else f'{how_long.days} days'
+                day_text = ('1 day' if how_long.days == 1 else f'{how_long.days} days')
                 item_name = cells[2].text
                 safe_print(f'{how_long.days}D: {item_title} by {item_author} is due in {day_text} on {item_due}')
             except IndexError:
