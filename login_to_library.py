@@ -80,7 +80,8 @@ def main():
             try:
                 #item_due = cells[5].find_all('div')
                 item_due = cells[5]
-                item_date_due = parse(item_due.text, timezone = tz)
+                item_due_date = list(item_due.stripped_strings)[1]
+                item_date_due = parse(item_due_date, timezone = tz)
                 item_parts = cells[2].find_all('div')
                 #for i, item in enumerate(cells):
                 #    print(f'part {i}: {item.text}')
