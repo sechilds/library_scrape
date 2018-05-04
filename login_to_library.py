@@ -91,7 +91,7 @@ def main():
                 item_author = item_parts[1].text
                 how_long = item_date_due - Delorean(timezone = tz) + timedelta(days=1)
                 day_text = ('1 day' if how_long.days == 1 else f'{how_long.days} days')
-                safe_print(f'Hold on {item_title} by {item_author} is in ready for pickup. Pick up by {item_date_due} ({day_text})')
+                safe_print(f'Hold on {item_title} by {item_author} is in ready for pickup. Pick up by {item_date_due.format_datetime()} ({day_text})')
             except IndexError:
                 pass
     # books in transit
