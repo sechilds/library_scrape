@@ -159,11 +159,11 @@ def main():
                 pass
 
     driver.close()
-    s = 'Next: '
+    s = 'Next:'
     if  item_table:
-        s += f'Due: {first_due_days}'
+        s += f' Due: {first_due_days}'
     if ready_for_pickup:
-        s += f'Holds: {first_hold_days}'
+        s += f' Holds: {first_hold_days}'
 
     if item_table or ready_for_pickup:
         safe_print(s)
