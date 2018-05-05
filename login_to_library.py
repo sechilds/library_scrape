@@ -40,6 +40,7 @@ def main():
     except NoSuchElementException:
         item_table = False
     if item_table:
+        first_due = True
         html_table = item_table.get_attribute('outerHTML')
         soup = BeautifulSoup(html_table, 'html.parser')
         rows = soup.findAll("tr")
@@ -54,6 +55,9 @@ def main():
                 item_date_due = parse(item_due, timezone = tz)
                 how_long = item_date_due - Delorean(timezone = tz) + timedelta(days=1)
                 day_text = ('1 day' if how_long.days == 1 else f'{how_long.days} days')
+                if first_due:
+                    first_due_days = day_text
+                    first_due = False
                 item_name = cells[2].text
                 l.append(f'{how_long.days}D: {item_title} by {item_author} is due in {day_text} on {item_due}')
             except IndexError:
@@ -72,6 +76,7 @@ def main():
     except NoSuchElementException:
         ready_for_pickup = False
     if ready_for_pickup:
+        first_hold = True
         item_table = ready_for_pickup.find_element_by_class_name('item-list')
         html_table = item_table.get_attribute('outerHTML')
         soup = BeautifulSoup(html_table, 'html.parser')
@@ -93,6 +98,9 @@ def main():
                 item_author = item_parts[1].text
                 how_long = hold_date_due - Delorean(timezone = tz) + timedelta(days=1)
                 hold_day_text = ('1 day' if how_long.days == 1 else f'{how_long.days} days')
+                if first_hold:
+                    first_hold_days = hold_day_text
+                    first_hold = False
                 l.append(f'Hold on {item_title} by {item_author} is in ready for pickup. Pick up by {hold_date_due.format_datetime()} ({hold_day_text})')
             except IndexError:
                 pass
@@ -153,9 +161,9 @@ def main():
     driver.close()
     s = 'Next: '
     if  item_table:
-        s += f'Due: {day_text}'
+        s += f'Due: {first_due_days}'
     if ready_for_pickup:
-        s += f'Holds: {day_text}'
+        s += f'Holds: {first_hold_days}'
 
     if item_table or ready_for_pickup:
         safe_print(s)
