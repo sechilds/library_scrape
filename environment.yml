@@ -13,3 +13,5 @@ dependencies:
   - pytest
   - lxml
   - beautifulsoup4
+  - pip:
+    - delorean
