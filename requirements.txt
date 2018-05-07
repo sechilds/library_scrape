@@ -1,0 +1,4 @@
+selenium
+lxml
+beautifulsoup4
+delorean
