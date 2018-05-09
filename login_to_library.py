@@ -5,7 +5,7 @@ from selenium.common.exceptions import NoSuchElementException
 from bs4 import BeautifulSoup
 from delorean import Delorean
 from delorean import parse
-from secrets import library_card, library_pin
+from secrets import library_card, library_pin, york_email, york_password
 from time import sleep
 from datetime import timedelta
 
@@ -34,6 +34,7 @@ def main():
     password_box.send_keys(york_password)
     login_button = driver.find_element_by_name('submit')
     login_button.click()
+    sleep(3)
 
     try:
         media_list = driver.find_element_by_class_name('media-list')
