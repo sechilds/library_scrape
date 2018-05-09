@@ -25,6 +25,38 @@ def main():
 
     driver = webdriver.Firefox(log_path = '/Users/sechilds/geckodriver.log')
 
+    # York Library
+    driver.get('https://www.library.yorku.ca/find/MyResearch/CheckedOut')
+
+    username = driver.find_element_by_id('loginUsername')
+    username.send_keys(york_email)
+    password_box = driver.find_element_by_id('loginPassword')
+    password_box.send_keys(york_password)
+    login_button = driver.find_element_by_name('submit')
+    login_button.click()
+
+    try:
+        media_list = driver.find_element_by_class_name('media-list')
+    except NoSuchElementException:
+        media_list = False
+    if media_list:
+        first_york_due = True
+        items = media_list.find_elements_by_tag_name('li')
+        for item in items:
+            media_title = item.find_element_by_class_name('media-heading').text
+            media_author = item.find_element_by_class_name('author-info').text
+            checkout_details = item.find_element_by_class_name('checkout-details')
+            checkout_details_list = checkout_details.find_elements_by_tag_name('dd')
+            due_date = checkout_details_list[1].text
+            item_date_due = parse(due_date, timezone = tz)
+            how_long = item_date_due - Delorean(timezone = tz) + timedelta(days=1)
+            day_text = ('1 day' if how_long.days == 1 else f'{how_long.days} days')
+            if first_york_due:
+                first_york_due_days = day_text
+                first_due = False
+            l.append(f'{how_long.days}D: {media_title}/{media_author} is due in {day_text} on {due_date}')
+
+
     driver.get('https://torontopubliclibrary.ca/signin')
     card_no = driver.find_element_by_id('userId')
     card_no.send_keys(library_card)
@@ -162,10 +194,12 @@ def main():
     s = 'Next:'
     if  item_table:
         s += f' Due: {first_due_days}'
+    if media_list:
+        s += f' York: {first_york_due_days}'
     if ready_for_pickup:
         s += f' Holds: {first_hold_days}'
 
-    if item_table or ready_for_pickup:
+    if item_table or ready_for_pickup or media_list:
         safe_print(s)
     else:
         safe_print('Nothing Due or Ready for Pickup')
