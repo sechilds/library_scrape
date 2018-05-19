@@ -54,7 +54,7 @@ def main():
             day_text = ('1 day' if how_long.days == 1 else f'{how_long.days} days')
             if first_york_due:
                 first_york_due_days = day_text
-                first_due = False
+                first_york_due = False
             l.append(f'{how_long.days}D: {media_title}/{media_author} is due in {day_text} on {due_date}')
 
 
