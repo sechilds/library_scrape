@@ -72,6 +72,7 @@ def main():
         item_table = driver.find_element_by_class_name('item-list')
     except NoSuchElementException:
         item_table = False
+        first_due_days = ""
     if item_table:
         first_due = True
         html_table = item_table.get_attribute('outerHTML')
@@ -95,6 +96,7 @@ def main():
                 l.append(f'{how_long.days}D: {item_title} by {item_author} is due in {day_text} on {item_due}')
             except IndexError:
                 pass
+
 
     # the problem with holds - there are 3 tables:
     # holds-redux still-on-hold
