@@ -86,7 +86,11 @@ def main():
                 item_parts = cells[2].find_all('div')
                 item_title = item_parts[0].text
                 item_author = item_parts[1].text
-                item_date_due = parse(item_due, timezone = tz)
+                try:
+                    item_date_due = parse(item_due, timezone = tz)
+                except ValueError:
+                    due_in_parens = item_date_due[item_date_due.find("(")+1:item_date_due.find(")")]
+                    item_date_due = parse(due_in_parens, timezone = tz)
                 how_long = item_date_due - Delorean(timezone = tz) + timedelta(days=1)
                 day_text = ('1 day' if how_long.days == 1 else f'{how_long.days} days')
                 if first_due:
