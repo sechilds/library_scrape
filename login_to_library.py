@@ -91,7 +91,6 @@ def main():
                 except ValueError:
                     due_in_parens = item_due[item_due.find("(")+1:item_due.find(")")]
                     item_date_due = parse(due_in_parens, timezone = tz)
-                    print_
                 how_long = item_date_due - Delorean(timezone = tz) + timedelta(days=1)
                 day_text = ('1 day' if how_long.days == 1 else f'{how_long.days} days')
                 if first_due:
