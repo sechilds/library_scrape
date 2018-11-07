@@ -67,7 +67,7 @@ def main():
     submit_button.click()
 
     driver.get('https://account.torontopubliclibrary.ca/checkouts')
-    sleep(3)
+    sleep(8)
     try:
         item_table = driver.find_element_by_class_name('item-list')
     except NoSuchElementException:
