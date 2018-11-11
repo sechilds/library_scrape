@@ -8,8 +8,8 @@ are do -- so I can run it every day.
 You need to add your library card number and PIN into
 a `secrets.py` file -- that is ignored by git.
 
+## Lightning Talk at PyCon Canada 2018!
+
 ## TO DO
 
-* check for holds
-* write output to a file (or should this be done through bash)
 * highlight if books are overdue, due today, due tomorrow or due in 2 days
