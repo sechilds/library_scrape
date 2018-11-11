@@ -1,10 +1,11 @@
-name: library_scrape
+name: library_scrape2
 channels:
   - conda-forge
   - defaults
 dependencies:
   - selenium
-  - python=3.6
+  - rise
+  - python
   - ipython
   - ipykernel
   - nb_conda
